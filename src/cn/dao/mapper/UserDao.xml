@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="cn.dao.UserDao">
+  <insert id="initWXUser" parameterType="java.util.List">
+  insert into
+  users(userid,name)
+  values
+  <foreach collection="list" item="item" index="index"
+   separator=",">
+   (#{item.userid},#{item.name})
+  </foreach>
+  </insert>
+  <select id="initRole" resultMap="UserResultMap">
+  SELECT u.userid,u.name,u2.role_id,r.role_name,r.role_type 
+from users u INNER JOIN user2role u2 
+on  u.userid=u2.uid and u.userid=#{0}
+LEFT JOIN roles r
+on u2.role_id=r.role_id
+  </select>
+   <resultMap type="User" id="UserResultMap">
+    		<id property="userid" column="userid" />
+    		<result property="name" column="name" />
+    		<collection property="roles" ofType="Role">
+    			<id property="roleId" column="role_id" />
+    			<result property="roleName"  column="role_name" />
+    			<result property="roleType"  column="role_type" />
+    		</collection>
+    </resultMap>
+    <select id="getUsers" resultType="User">
+      SELECT userid,name from users where userid in(
+SELECT DISTINCT uid from user2role where role_id=#{0}
+)
+    </select>
+  </mapper>

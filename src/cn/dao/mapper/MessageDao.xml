@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="cn.dao.MessageDao">
+ <insert id="newTextMessage" parameterType="Message">
+ insert into messages(from_user,to_user,context,type) 
+ values(#{fromUser},#{toUser},#{context},#{type})
+ </insert>
+ <select id="getUnSend" resultType="Message">
+ select * from messages where state &lt;&gt; '1'
+ </select>
+ <update id="updateState">
+ update messages set state=#{0} where mid=#{1}
+ </update>
+  </mapper>

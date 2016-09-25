@@ -1,0 +1,98 @@
+<beans  xmlns="http://www.springframework.org/schema/beans"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:mvc="http://www.springframework.org/schema/mvc"  
+      
+      
+   xsi:schemaLocation="
+   http://www.springframework.org/schema/beans     
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/context 
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+ 
+	<context:component-scan base-package="cn.controller" />
+	 <mvc:annotation-driven>
+	 <mvc:message-converters register-defaults="true">  
+        <bean class="org.springframework.http.converter.StringHttpMessageConverter">  
+             <property name="supportedMediaTypes">    
+                <list>    
+                    <value>text/plain;charset=UTF-8</value>    
+                    <value>text/html;charset=UTF-8</value>    
+                </list>    
+            </property>    
+        </bean>  
+    </mvc:message-converters> 
+	 </mvc:annotation-driven>
+	 
+<!-- 	 访问权限控制 -->
+    <mvc:interceptors>
+   <!--  普通用户   --> 
+        <mvc:interceptor>  
+            <mvc:mapping path="/user/*"/>  
+            <bean class="cn.filters.BaseFilter">
+             <constructor-arg value="user"/>
+            </bean>  
+        </mvc:interceptor> 
+        <!-- 支出终审 -->
+         <mvc:interceptor>  
+            <mvc:mapping path="/spend_check/*"/>  
+           <bean class="cn.filters.BaseFilter">
+             <constructor-arg value="spend_check"/>
+              </bean>  
+        </mvc:interceptor>  
+       <!--  收入终审 -->
+         <mvc:interceptor>  
+            <mvc:mapping path="/income_check/*"/>  
+           <bean class="cn.filters.BaseFilter">
+             <constructor-arg value="income_check"/>
+              </bean>  
+        </mvc:interceptor>  
+        <!-- 出纳 -->
+         <mvc:interceptor>  
+            <mvc:mapping path="/cashier/*"/>  
+           <bean class="cn.filters.BaseFilter">
+             <constructor-arg value="cashier"/> 
+              </bean>  
+        </mvc:interceptor> 
+         <!-- 签字 -->
+         <mvc:interceptor>  
+            <mvc:mapping path="/signature/*"/>  
+           <bean class="cn.filters.BaseFilter">
+             <constructor-arg value="signature"/> 
+              </bean>  
+        </mvc:interceptor> 
+        <!-- 收入对接 -->
+         <mvc:interceptor>  
+            <mvc:mapping path="/income/*"/>  
+             <bean class="cn.filters.BaseFilter">
+             <constructor-arg value="income"/> 
+              </bean>  
+        </mvc:interceptor> 
+         <!-- 开票 -->
+         <mvc:interceptor>  
+            <mvc:mapping path="/invoice/*"/>  
+             <bean class="cn.filters.BaseFilter">
+             <constructor-arg value="invoice"/> 
+              </bean>  
+        </mvc:interceptor> 
+          <!-- 项目管理 -->
+         <mvc:interceptor>  
+            <mvc:mapping path="/project/*"/>  
+             <bean class="cn.filters.BaseFilter">
+             <constructor-arg value="project"/> 
+              </bean>  
+        </mvc:interceptor> 
+        
+    </mvc:interceptors> 
+ 
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/JSP/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+</beans>

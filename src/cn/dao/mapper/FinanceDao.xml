@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="cn.dao.FinanceDao" >
+  <insert id="createNewSpend" parameterType="Spend">
+  insert into spends(fee,summary,reason,project_id,check_id,create_id,create_time) 
+  values(#{fee},#{summary},#{reason},#{projectId},#{checkId},#{createId},#{createTime})
+  </insert>
+  <select id="getTodo" parameterType="User" resultType="java.lang.Integer">
+SELECT count(*) from 
+(
+  SELECT state from spends where state='0' and check_id=#{name}
+<foreach collection="roles" item="item" index="index"
+			separator=",">
+
+		</foreach>
+)pp
+  </select>
+  </mapper>
